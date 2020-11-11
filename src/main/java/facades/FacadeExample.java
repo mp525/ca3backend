@@ -14,7 +14,7 @@ public class FacadeExample {
 
     private static FacadeExample instance;
     private static EntityManagerFactory emf;
-    
+     
     //Private Constructor to ensure Singleton
     private FacadeExample() {}
     
