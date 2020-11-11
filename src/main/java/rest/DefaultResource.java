@@ -2,6 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.PersonCatDTO;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import javax.ws.rs.core.Context;
@@ -32,8 +33,8 @@ public class DefaultResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getDefault() throws IOException, InterruptedException, ExecutionException {
-        List<String> list = facade.fetchParallel();
-        return GSON.toJson(list);
+        PersonCatDTO dto = facade.fetchParallel();
+        return GSON.toJson(dto);
     }
 
    

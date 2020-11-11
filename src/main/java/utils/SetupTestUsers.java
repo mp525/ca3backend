@@ -1,6 +1,7 @@
 package utils;
 
 
+import entities.Cat;
 import entities.Role;
 import entities.User;
 
@@ -23,6 +24,14 @@ public class SetupTestUsers {
     User user = new User("user", "test1");
     User admin = new User("admin", "test2");
     User both = new User("user_admin", "test3");
+    
+    Cat cat1 = new Cat("cat1", "race1");
+    Cat cat2 = new Cat("cat2", "race2");
+    Cat cat3 = new Cat("cat3", "race3");
+    
+    user.addCat(cat1);
+    admin.addCat(cat2);
+    both.addCat(cat3);
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");

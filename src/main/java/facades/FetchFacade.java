@@ -2,6 +2,9 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.CatFactDTO;
+import dto.PersonCatDTO;
+import dto.PersonDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +33,8 @@ public class FetchFacade {
         }
     }
 
-    public List<String> fetchParallel() throws InterruptedException, ExecutionException {
-        String[] hostList = {"https://api.chucknorris.io/jokes/random", "https://icanhazdadjoke.com",
-            "https://swapi.dev/api/planets/schema", "https://swapi.dev/api/vehicles/schema", "https://swapi.dev/api/species/schema"};
+    public PersonCatDTO fetchParallel() throws InterruptedException, ExecutionException {
+        String[] hostList = {"https://api.namefake.com/", "https://meowfacts.herokuapp.com/"};
         ExecutorService executor = Executors.newCachedThreadPool();
         List<Future<String>> futures = new ArrayList<>();
         List<String> retList = new ArrayList();
@@ -42,12 +44,22 @@ public class FetchFacade {
             Future future = executor.submit(urlTask);
             futures.add(future);
         }
-
-        for (Future<String> fut : futures) {
-            retList.add(fut.get());
+        CatFactDTO fact = null;
+        PersonDTO person = null;
+        
+        for (Future<String> future : futures) {
+            if(future.get().contains("name")){
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                person = gson.fromJson(future.get(), PersonDTO.class);
+            }
+            else{
+                Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                fact = gson.fromJson(future.get(), CatFactDTO.class);
+            }
         }
        
-        return retList;
+        PersonCatDTO both = new PersonCatDTO(person, fact);
+        return both;
     }
 
 }
