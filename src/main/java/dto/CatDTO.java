@@ -12,6 +12,7 @@ import entities.Cat;
  * @author Mathias
  */
 public class CatDTO {
+    private long id;
     private String name;
     private String race;
     private String owner;
@@ -25,6 +26,7 @@ public class CatDTO {
         this.name = cat.getName();
         this.race = cat.getRace();
         this.owner = cat.getOwner().getUserName();
+        this.id = cat.getId();
     }
 
     public String getOwner() {

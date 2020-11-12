@@ -11,12 +11,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
@@ -87,6 +89,16 @@ public class DemoResource {
         List<CatDTO> cats = FACADE.getCats(thisuser);
         return GSON.toJson(cats);
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("admin/allCats")
+    @RolesAllowed("admin")
+    public String getAllCats() {
+        //String thisuser = securityContext.getUserPrincipal().getName();
+        List<CatDTO> cats = FACADE.getAllCats();
+        return GSON.toJson(cats);
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -107,5 +119,26 @@ public class DemoResource {
         String thisuser = securityContext.getUserPrincipal().getName();
         CatDTO newCat = FACADE.addCat(catDTO, thisuser);
         return "{\"msg\": \"" + newCat.getName() + " was registered!\"}";
+    }
+    
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("admin")
+    @RolesAllowed("admin")
+    public String addCatAdmin(String cat) {
+        CatDTO catDTO = GSON.fromJson(cat, CatDTO.class);
+        String thisuser = securityContext.getUserPrincipal().getName();
+        CatDTO newCat = FACADE.addCat(catDTO, thisuser);
+        return "{\"msg\": \"" + newCat.getName() + " was registered!\"}";
+    }
+    
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("admin/{id}")
+    @RolesAllowed("admin")
+    public String deleteCat(@PathParam("id") long id) {
+        CatDTO deletedCat = FACADE.deleteCat(id);
+        return "{\"msg\": \"" + deletedCat.getName() + " was deleted!\"}";
     }
 }

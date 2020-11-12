@@ -49,6 +49,32 @@ public class UserFacade {
         return list;
     }
     
+    public List<CatDTO> getAllCats(){
+        List<CatDTO> list = new ArrayList();
+        EntityManager em = emf.createEntityManager();
+        TypedQuery<Cat> query = em.createQuery("select c from Cat c", Cat.class);
+       
+        List<Cat> catList = query.getResultList();
+        
+        for (Cat cat : catList) {
+            list.add(new CatDTO(cat));
+        }
+        
+        return list;
+    }
+    
+    public CatDTO deleteCat(long id){
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Cat cat = em.find(Cat.class, id);
+        cat.getOwner().removeCat(cat);
+        em.remove(cat);
+        
+        em.getTransaction().commit();
+        CatDTO dto = new CatDTO(cat);
+        return dto;
+    }
+    
     public CatDTO addCat(CatDTO catDTO, String username){
         EntityManager em = emf.createEntityManager();
         
