@@ -2,6 +2,8 @@ package facades;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.BreedDTO;
+import dto.BreedsDTO;
 import dto.CatFactDTO;
 import dto.PersonCatDTO;
 import dto.PersonDTO;
@@ -31,6 +33,26 @@ public class FetchFacade {
             String raw = HttpUtils.fetchData(url);
             return raw;
         }
+    }
+    
+    public static String fetchBreeds() throws IOException{
+       // List<String> breedStrings = new ArrayList();
+        String url = "https://api.thecatapi.com/v1/breeds";
+        //Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String allRaw = HttpUtils.fetchData(url);
+        return allRaw;
+//        Object[] arr = gson.fromJson(allRaw, Object[].class);
+//        List<BreedDTO> breeds = new ArrayList();
+//        
+//        for (String breed : breedStrings) {
+//            BreedDTO dto = gson.fromJson(breed, BreedDTO.class);
+//            breeds.add(dto);
+//        }
+//        
+        
+        
+        
+//        return breeds;
     }
 
     public PersonCatDTO fetchParallel() throws InterruptedException, ExecutionException {

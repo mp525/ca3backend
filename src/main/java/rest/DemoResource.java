@@ -2,9 +2,12 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.BreedDTO;
 import dto.CatDTO;
 import entities.User;
+import facades.FetchFacade;
 import facades.UserFacade;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.persistence.EntityManager;
@@ -98,6 +101,15 @@ public class DemoResource {
         //String thisuser = securityContext.getUserPrincipal().getName();
         List<CatDTO> cats = FACADE.getAllCats();
         return GSON.toJson(cats);
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("breeds")
+    public String getBreeds() throws IOException {
+        //String thisuser = securityContext.getUserPrincipal().getName();
+        String breeds = FetchFacade.fetchBreeds();
+        return breeds;
     }
 
     @GET
